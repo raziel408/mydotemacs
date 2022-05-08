@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=EXWM
+Comment=Emacs as wm
+Exec=emacs
+Type=aplication

@@ -1,0 +1,126 @@
+(require 'package)
+(setq package-enable-at-startup nil)
+(add-to-list 'package-archives
+	     '("melpa" . "https://melpa.org/packages/"))
+(package-initialize)
+
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+(unless (package-installed-p 'spacemacs-theme)
+  (package-refresh-contents)
+  (package-install 'spacemacs-theme))
+(unless (package-installed-p 'auctex)
+  (package-refresh-contents)
+  (package-install 'auctex))
+(unless (package-installed-p 'web-mode)
+  (package-refresh-contents)
+  (package-install 'web-mode))
+(unless (package-installed-p 'js2-mode)
+  (package-refresh-contents)
+  (package-install 'js2-mode))
+(unless (package-installed-p 'simple-httpd)
+  (package-refresh-contents)
+  (package-install 'simple-httpd))
+(unless (package-installed-p 'company-auctex)
+  (package-refresh-contents)
+  (package-install 'company-auctex))
+(unless (package-installed-p 'company-web)
+  (package-refresh-contents)
+  (package-install 'company-web))
+(unless (package-installed-p 'elfeed)
+  (package-refresh-contents)
+  (package-install 'elfeed))
+(unless (package-installed-p 'skewer-mode)
+  (package-refresh-contents)
+  (package-install 'skewer-mode))
+(unless (package-installed-p 'lorem-ipsum)
+  (package-refresh-contents)
+  (package-install 'lorem-ipsum))
+
+;; La siguiente line carga tu configuración de otro archivo
+(org-babel-load-file (expand-file-name "~/.emacs.d/emacsconfig.org"))
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(TeX-electric-math '("$" . "$"))
+ '(ansi-color-faces-vector
+   [default default default italic underline success warning error])
+ '(company-quickhelp-color-background "#4F4F4F")
+ '(company-quickhelp-color-foreground "#DCDCCC")
+ '(custom-enabled-themes '(wombat))
+ '(custom-safe-themes
+   '("d9646b131c4aa37f01f909fbdd5a9099389518eb68f25277ed19ba99adeb7279" "fa2b58bb98b62c3b8cf3b6f02f058ef7827a8e497125de0254f56e373abee088" "3b8284e207ff93dfc5e5ada8b7b00a3305351a3fb222782d8033a400a48eca48" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default))
+ '(electric-pair-mode t)
+ '(fci-rule-color "#383838")
+ '(hl-todo-keyword-faces
+   '(("TODO" . "#dc752f")
+     ("NEXT" . "#dc752f")
+     ("THEM" . "#2d9574")
+     ("PROG" . "#4f97d7")
+     ("OKAY" . "#4f97d7")
+     ("DONT" . "#f2241f")
+     ("FAIL" . "#f2241f")
+     ("DONE" . "#86dc2f")
+     ("NOTE" . "#b1951d")
+     ("KLUDGE" . "#b1951d")
+     ("HACK" . "#b1951d")
+     ("TEMP" . "#b1951d")
+     ("FIXME" . "#dc752f")
+     ("XXX+" . "#dc752f")
+     ("\\?\\?\\?+" . "#dc752f")))
+ '(inhibit-startup-screen t)
+ '(lsp-enable-indentation t)
+ '(nrepl-message-colors
+   '("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3"))
+ '(org-agenda-files
+   '("/home/raziel/Orgmode/Intinerario/tareassinclasificar.org" "/home/raziel/Orgmode/Intinerario/academico.org" "/home/raziel/Orgmode/Intinerario/personal.org" "/home/raziel/Orgmode/Intinerario/trabajo.org"))
+ '(org-capture-templates
+   '(("n" "Crea una nueva tarea" entry
+      (file "")
+      (file "~/Orgmode/Intinerario/tarea.org"))))
+ '(org-fontify-done-headline nil)
+ '(org-fontify-todo-headline nil)
+ '(org-log-into-drawer t)
+ '(org-refile-allow-creating-parent-nodes 'confirm)
+ '(org-refile-targets '((org-agenda-files :tag . "")))
+ '(org-refile-use-outline-path 'file)
+ '(package-selected-packages
+   '(magit counsel-projectile projectile haskell-mode exwm org-ref ivy-bibtex yaml-mode telephone-line indent-guide json-mode flycheck monokai-theme doom zenburn-theme switch-window company-web smex lorem-ipsum skewer-mode which-key web-mode use-package spacemacs-theme simple-httpd obsidian-theme js2-mode jazz-theme elfeed doom-themes dakrone-theme cyberpunk-theme company-auctex beacon))
+ '(pdf-view-midnight-colors '("#b2b2b2" . "#292b2e"))
+ '(vc-annotate-background "#2B2B2B")
+ '(vc-annotate-color-map
+   '((20 . "#BC8383")
+     (40 . "#CC9393")
+     (60 . "#DFAF8F")
+     (80 . "#D0BF8F")
+     (100 . "#E0CF9F")
+     (120 . "#F0DFAF")
+     (140 . "#5F7F5F")
+     (160 . "#7F9F7F")
+     (180 . "#8FB28F")
+     (200 . "#9FC59F")
+     (220 . "#AFD8AF")
+     (240 . "#BFEBBF")
+     (260 . "#93E0E3")
+     (280 . "#6CA0A3")
+     (300 . "#7CB8BB")
+     (320 . "#8CD0D3")
+     (340 . "#94BFF3")
+     (360 . "#DC8CC3")))
+ '(vc-annotate-very-old-color "#DC8CC3"))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(default ((t (:inherit nil :extend nil :stipple nil :background "#292b2e" :foreground "#b2b2b2" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 143 :width normal :foundry "PfEd" :family "DejaVu serif Mono"))))
+ '(rainbow-delimiters-base-face ((t (:inherit nil))))
+ '(rainbow-delimiters-depth-1-face ((t (:inherit rainbow-delimiters-base-face :foreground "orange red"))))
+ '(rainbow-delimiters-depth-2-face ((t (:inherit rainbow-delimiters-base-face :foreground "magenta"))))
+ '(rainbow-delimiters-depth-3-face ((t (:inherit rainbow-delimiters-base-face :foreground "dark orange"))))
+ '(rainbow-delimiters-depth-4-face ((t (:inherit rainbow-delimiters-base-face :foreground "spring green"))))
+ '(whitespace-tab ((t (:foreground "#636363")))))

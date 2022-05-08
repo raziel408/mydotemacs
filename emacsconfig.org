@@ -1,0 +1,528 @@
+#+startup: overview
+* Los paquetes que uso 
+  #+BEGIN_SRC emacs-lisp
+    (use-package which-key
+      :ensure t
+      :init
+      (which-key-mode))
+    (use-package beacon
+      :ensure t
+      :init
+      (beacon-mode nil))
+    (use-package rainbow-delimiters
+      :ensure t
+      :config
+      (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+
+    (use-package indent-guide
+      :ensure t
+      ;; :config
+      ;; (set-face-background 'indent-guide-face "dimgray")
+      :init
+      (indent-guide-global-mode))
+    #+END_SRC
+* Modos de varios:
+#+begin_src emacs-lisp
+  (use-package emmet-mode
+    :ensure t)
+  (use-package yaml-mode
+    :ensure t
+    :config
+    (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode)))
+  (use-package haskell-mode
+    :ensure t)
+#+end_src
+* Rest Client:
+  #+begin_src emacs-lisp
+    (use-package restclient
+      :ensure t)
+    (use-package ob-restclient
+      :ensure t
+      :config
+      (org-babel-do-load-languages
+       'org-babel-load-languages
+       '((restclient . t)))
+      )
+  #+end_src
+* reloj
+  #+begin_src emacs-lisp
+    (setq display-time-24hr-format 1)
+    (display-time-mode 1)
+    (display-battery-mode 1)
+  #+end_src
+* exwm
+  #+begin_src emacs-lisp
+    ;; (use-package exwm
+    ;;   :ensure t
+    ;;   :config
+    ;;   (require 'exwm-config)
+    ;;   (exwm-config-default))
+    ;; (require 'exwm-systemtray)
+    ;; (exwm-systemtray-enable)
+  #+end_src
+* Configuraciones globales:
+** Las que me gustan (estan bien):
+   #+BEGIN_SRC emacs-lisp
+     (show-paren-mode 1)
+     (electric-pair-mode t)
+     (line-number-mode 1)
+     (column-number-mode 1)
+     ;; (when window-system (global-hl-line-mode t))
+     (defalias 'yes-or-no-p 'y-or-n-p)
+     (tool-bar-mode -1)
+     (menu-bar-mode -1)
+     (scroll-bar-mode -1)
+     (save-place-mode 1)
+     (setq use-dialog-box nil)
+     (global-auto-revert-mode 1)
+     (setq split-height-threshold 80)
+     (setq split-width-threshold 100)
+     (defvar backup-dir "~/.emacs.d/backups/")
+     (setq backup-directory-alist (list (cons "." backup-dir)))
+   #+END_SRC
+** Las que no estan bien:
+   #+BEGIN_SRC emacs-lisp
+     ;; (global-linum-mode t)
+     ;; (setq scroll-conservatively 100)
+     ;; (when window-system (global-prettify-symbols-mode t))
+
+     ;; emojis
+     ;; Hay que instalar symbola y dajavu fonts
+     (when (member "Symbola" (font-family-list))
+       (set-fontset-font
+	t 'symbol (font-spec :family "Segoe UI Emoji") nil 'prepend))
+   #+END_SRC
+** Transparencia:
+#+begin_src emacs-lisp
+  (set-frame-parameter (selected-frame) 'alpha '(85 . 50))
+   (add-to-list 'default-frame-alist '(alpha . (85 . 50)))
+#+end_src
+* Terminal:
+#+begin_src emacs-lisp
+  (defvar my-term-shell "/bin/bash")
+  (defadvice ansi-term (before force-bash)
+    (interactive (list my-term-shell)))
+  (ad-activate `ansi-term)
+#+end_src
+* Yasnippet:
+  #+begin_src emacs-lisp
+    (use-package yasnippet
+      :ensure t
+      :config
+      (use-package js-react-redux-yasnippets
+	:ensure t)
+      (yas-reload-all))
+  #+end_src
+* switch-window
+  #+begin_src emacs-lisp
+    (use-package switch-window
+      :ensure t
+      :config
+      (setq switch-window-input-style 'minibuffer)
+      (setq switch-window-increase 4)
+      (setq switch-window-threshold 2)
+      (setq switch-window-shortcut-style 'qwerty)
+      (setq switch-window-qwerty-shortcuts
+	    '("a" "s" "d" "f" "j" "k" "l"))
+      :bind
+      ([remap other-window] . switch-window))
+  #+end_src
+* Ivy:
+  #+begin_src emacs-lisp
+    (use-package ivy
+      :ensure t
+      :config
+      (ivy-mode 1)
+      (setq ivy-use-virtual-buffers t)
+      (setq ivy-count-format "(%d/%d) "))
+  #+end_src
+* Projectile:
+#+begin_src emacs-lisp
+  (use-package projectile
+    :ensure t
+    :diminish projectile-mode
+    :config (projectile-mode)
+    :custom ((projectile-completion-system 'ivy))
+    :bind-keymap
+    ("C-c p" . projectile-command-map))
+
+  (use-package counsel-projectile
+    :config (counsel-projectile-mode))
+#+end_src
+* Magit
+#+begin_src emacs-lisp
+  (use-package magit
+    :ensure t
+    :commands (magit-status magit-get-current-branch)
+    :custom
+    (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
+#+end_src
+* Mode line
+  #+begin_src emacs-lisp
+    (use-package telephone-line
+      :ensure t
+      :init
+      (telephone-line-mode 1))
+  #+end_src
+* Navegador
+  #+BEGIN_SRC emacs-lisp
+    ;; (setq browse-url-browser-function 'eww-browse-url)
+  #+END_SRC
+* LaTex
+  #+BEGIN_SRC emacs-lisp
+    (use-package tex
+      :ensure auctex
+      :config
+      (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+      (add-hook 'LaTeX-mode-hook 'company-mode)
+      (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+      (setq reftex-plug-into-auctex t))
+
+    ;; (add-hook 'latex-mode-hook 'turn-on-reftex)
+    ;; (add-hook 'LaTeX-mode-hook 'company-auctex-init)
+  #+END_SRC
+* Python
+  #+BEGIN_SRC emacs-lisp
+    (setq python-shell-interpreter "/usr/bin/python3")
+  #+END_SRC
+* Singular
+  #+BEGIN_SRC emacs-lisp
+    (setq load-path (cons "<singular-emacs-home-directory>" load-path))
+    (autoload 'singular "singular"
+      "Start Singular using default values." t)
+    (autoload 'singular-other "singular"
+      "Ask for arguments and start Singular." t)
+
+    (add-to-list 'load-path "/home/raziel/programas/singular/share/singular/emacs/")
+    (require 'singular)
+    (setq singular-emacs-home-directory "/home/raziel/programas/singular/share/singular/emacs/")
+    (defvar current-menubar nil)
+    (setq singular-executable-default "/home/raziel/programas/singular/bin/Singular")
+    ;; (load-file "/home/raziel/programas/singular/share/singular/emacs/.emacs-general")
+    ;; (load-file "/home/raziel/programas/singular/share/singular/emacs/.emacs-singular")
+  #+END_SRC
+* Flycheck
+  #+begin_src emacs-lisp
+    (use-package flycheck
+      :ensure t
+      :init
+      (global-flycheck-mode)
+      (setq flycheck-javascript-standard-executable "semistandard"))
+
+    (setq-default flycheck-disabled-checkers
+		  (append flycheck-disabled-checkers
+			  '(javascript-jshint json-jsonlist)))
+
+    ;; Enable eslint checker for web-mode
+    (flycheck-add-mode 'javascript-eslint 'web-mode)
+    ;; Enable flycheck globally
+    ;; (add-hook 'after-init-hook #'global-flycheck-mode)
+    (use-package add-node-modules-path
+      :ensure t
+      :init
+      (add-hook 'flycheck-mode-hook 'add-node-modules-path))
+  #+end_src
+* WebDev
+** Server
+   #+BEGIN_SRC emacs-lisp
+     (setq httpd-root "~/Sync/www")
+     ;; (httpd-start)
+   #+END_SRC
+** Web-mode
+   #+BEGIN_SRC emacs-lisp
+     (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+     (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+     (add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
+     (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+     (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+     (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
+     (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
+     (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+     (add-to-list 'auto-mode-alist '("\\.css\\'" . web-mode))
+     (add-to-list 'auto-mode-alist '("\\.jsx?$" . web-mode))
+     (add-to-list 'auto-mode-alist '("\\.ejs\\'" . web-mode))
+
+     (defun my-web-mode-hook ()
+       "Hooks for Web mode."
+       (setq web-mode-markup-indent-offset 2)
+       (setq web-mode-css-indent-offset 2)
+       (setq web-mode-code-indent-offset 2)
+       (subword-mode 1)
+       (electric-pair-mode 1)
+       (emmet-mode 1)
+       (setq company-minimum-prefix-length 1))
+
+     (add-hook 'web-mode-hook  'my-web-mode-hook)
+   #+END_SRC
+** JS2 mode
+   #+BEGIN_SRC emacs-lisp
+     (defun my-js2-mode-hook ()
+       "Hooks for js2 mode"
+       (setq js-indent-level 2)
+       (setq js2-mode-show-strict-warnings nil)
+       (setq js2-mode-show-parse-errors nil)
+       (electric-pair-mode 1)
+       (js2-imenu-extras-mode 1)
+       (company-mode 1)
+       (httpd-start 1)
+       (subword-mode 1)
+       (yas-minor-mode 1)
+       (flycheck-mode 1))
+
+     (add-hook 'js2-mode-hook 'my-js2-mode-hook)
+     ;; (add-hook 'js2-mode-hook (setq flycheck-checker 'javascript-standard))
+   #+END_SRC
+** TypeScript:
+   #+begin_src emacs-lisp
+     (use-package tide
+       :ensure t)
+
+     (defun setup-tide-mode ()
+       (interactive)
+       (tide-setup)
+       (flycheck-mode +1)
+       (setq flycheck-check-syntax-automatically '(save mode-enabled))
+       (eldoc-mode +1)
+       (tide-hl-identifier-mode +1)
+       ;; company is an optional dependency. You have to
+       ;; install it separately via package-install
+       ;; `M-x package-install [ret] company`
+       (company-mode +1))
+
+     ;; aligns annotation to the right hand side
+     (setq company-tooltip-align-annotations t)
+
+     ;; formats the buffer before saving
+     (add-hook 'before-save-hook 'tide-format-before-save)
+
+     (add-hook 'typescript-mode-hook #'setup-tide-mode)
+     ;; (require 'web-mode)
+
+     (add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
+     (add-hook 'web-mode-hook
+	       (lambda ()
+		 (when (string-equal "tsx" (file-name-extension buffer-file-name))
+		   (setup-tide-mode))))
+
+     ;; enable typescript - tslint checker
+     (flycheck-add-mode 'typescript-tslint 'web-mode)
+     (setq tide-format-options '(:insertSpaceAfterFunctionKeywordForAnonymousFunctions t :placeOpenBraceOnNewLineForFunctions nil :indentSize 2 :tabSize 2))
+     (setq-default typescript-indent-level 2)
+   #+end_src
+** Prettier
+   #+begin_src emacs-lisp
+     (use-package prettier-js
+       :ensure t
+       :config
+       (defun web-mode-init-prettier-hook ()
+	 (add-node-modules-path)
+	 (prettier-js-mode))
+       (add-hook 'web-mode-hook  'web-mode-init-prettier-hook))
+   #+end_src
+** React
+   #+begin_src emacs-lisp
+     (setq web-mode-content-types-alist '(("jsx" . "\\.js[x]?\\'")))
+   #+end_src
+** skewer mode
+   #+BEGIN_SRC emacs-lisp
+     (add-hook 'js2-mode-hook 'skewer-mode)
+     (add-hook 'css-mode-hook 'skewer-css-mode)
+     (add-hook 'html-mode-hook 'skewer-html-mode)
+   #+END_SRC
+* Company mode:
+** Vainilla Company:
+   #+begin_src emacs-lisp
+     (use-package company
+       :ensure t)
+     ;; (use-package company
+     ;;   :ensure t
+     ;;   :init
+     ;;   (add-hook 'after-init-hook 'global-company-mode))
+     ;; (use-package company-auctex
+     ;;   :ensure t
+     ;;   :config
+     ;;   (require 'company)
+     ;;   :init
+     ;;   (company-auctex-init))
+     ;; (use-package company-web-html)
+     ;; (use-package company-web-jade)
+     ;; (use-package company-web-slim)
+   #+end_src
+** Usando LSP:
+   #+begin_src emacs-lisp
+     ;; (use-package company
+     ;;   :ensure t
+     ;;   :after lsp-mode
+     ;;   :hook (lsp-mode . company-mode)
+     ;;   ;; :bind (:map company-active-map
+     ;;   ;; 	 ("<tab>" . company-complete-selection))
+     ;;   ;; 	(:map lsp-mode-map
+     ;;   ;; 	 ("<tab>" . company-indent-or-complete-common))
+     ;;   :custom
+     ;;   (company-minimum-prefix-length 1)
+     ;;   (company-idle-delay 0.0))
+
+     ;; (use-package company-box
+     ;;   :ensure t
+     ;;   :hook (company-mode . company-box-mode))
+   #+end_src
+* lsp mode:
+  #+begin_src emacs-lisp
+    (setq read-process-output-max (* 1024 1024))
+    (setq gc-cons-threshold 200000000)
+    (use-package lsp-mode
+      :ensure t
+      :init
+      ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
+      (setq lsp-keymap-prefix "C-c l")
+      :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
+	     (LaTeX-mode . lsp-deferred)
+	     (web-mode . lsp)
+	     ;; if you want which-key integration
+	     (lsp-mode . lsp-enable-which-key-integration))
+      :commands (lsp lsp-deferred))
+
+    ;; optionally
+    (use-package lsp-ui
+      :ensure t
+      :commands lsp-ui-mode)
+
+    ;; if you are ivy user
+    (use-package lsp-ivy
+      :ensure t
+      :commands lsp-ivy-workspace-symbol)
+    (use-package lsp-treemacs
+      :ensure t
+      :commands lsp-treemacs-errors-list)
+
+    ;; optionally if you want to use debugger
+    (use-package dap-mode
+      :ensure t)
+    ;; (use-package dap-LANGUAGE) to load the dap adapter for your language
+  #+end_src
+** Latex:
+   #+begin_src emacs-lisp
+     (add-to-list 'lsp-language-id-configuration '(LaTeX-mode . "latex"))
+
+     ;; (lsp-register-client
+     ;;  (make-lsp-client :new-connection (lsp-stdio-connection "pyls")
+     ;;                   :activation-fn (lsp-activate-on "python")
+     ;;                   :server-id 'pyls))
+
+     ;; (setq lsp-tex-server 'digestif)
+     (defcustom lsp-tex-executable "digestif"
+       "Command to start the Digestif language server."
+       :group 'lsp-tex
+       :risky t
+       :type 'file)
+
+     (lsp-register-client
+      (make-lsp-client
+       ;; instead of `:new-connection (lsp-stdio-connection lsp-text-executable)` use
+       :new-connection (lsp-stdio-connection (lambda () lsp-text-executable))
+       :activation-fn (lsp-activate-on "plaintex" "latex")
+       :priority -1
+       :server-id 'digestif))
+   #+end_src
+** Java Script:
+   #+begin_src emacs-lisp
+     (add-to-list 'lsp-language-id-configuration '("\\.jsx?$" . "javascript"))
+
+     ;; (lsp-register-client
+     ;;  (make-lsp-client :new-connection (lsp-stdio-connection "pyls")
+     ;;                   :activation-fn (lsp-activate-on "javascript")
+     ;;                   :server-id 'pyls))
+   #+end_src
+* Load lisp
+  #+begin_src emacs-lisp
+    (add-hook 'tetris-mode-hook
+	      (load "~/.emacs.d/lisp/mytetris.el"))
+  #+end_src
+* Orgmode:
+  #+begin_src emacs-lisp
+    (add-hook 'org-mode-hook 'toggle-truncate-lines)
+    (global-set-key (kbd "C-c l") #'org-store-link)
+    (global-set-key (kbd "C-c a") #'org-agenda)
+    (global-set-key (kbd "C-c c") #'org-capture)
+    (setq org-directory "~/Orgmode")
+    (setq org-agenda-start-with-log-mode t)
+    (setq org-log-done 'time)
+    (setq org-default-notes-file (concat org-directory "/Intinerario/tareassinclasificar.org"))
+  #+end_src
+** org-ref:
+   #+begin_src emacs-lisp
+     (use-package ivy-bibtex
+       :ensure t)
+     (use-package org-ref
+       :ensure t
+       :config
+       (require 'org-ref-ivy)
+       (setq org-ref-insert-link-function 'org-ref-insert-link-hydra/body
+	     org-ref-insert-cite-function 'org-ref-cite-insert-ivy
+	     org-ref-insert-label-function 'org-ref-insert-label-link
+	     org-ref-insert-ref-function 'org-ref-insert-ref-link
+	     org-ref-cite-onclick-function (lambda (_) (org-ref-citation-hydra/body)))
+       (define-key org-mode-map (kbd "C-c ]") 'org-ref-insert-link)
+       (setq bibtex-completion-bibliography '("~/Sync/bibliografiaMat/mizbiblio.bib")))
+   #+end_src
+** Org-roam:
+   #+begin_src emacs-lisp
+     (use-package org-roam
+       :ensure t
+       :custom
+       (org-roam-directory (file-truename "~/Orgmode/huginandmunin"))
+       :bind (("C-c n l" . org-roam-buffer-toggle)
+	      ("C-c n f" . org-roam-node-find)
+	      ("C-c n g" . org-roam-graph)
+	      ("C-c n i" . org-roam-node-insert)
+	      ("C-c n c" . org-roam-capture)
+	      ;; Dailies
+	      ("C-c n j" . org-roam-dailies-capture-today))
+       :config
+       ;; If you're using a vertical completion framework, you might want a more informative completion interface
+       (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
+       (org-roam-db-autosync-mode)
+       ;; If using org-roam-protocol
+       (require 'org-roam-protocol))
+
+     ;; (use-package org-roam
+     ;;   :ensure t
+     ;;   :config
+     ;;   (setq org-roam-directory "~/Orgmode/huginandmunin")
+     ;;   (org-roam-db-autosync-mode))
+   #+end_src
+* Dashboard:
+  #+begin_src emacs-lisp
+    (use-package dashboard
+      :ensure t
+      :config
+      (dashboard-setup-startup-hook)
+      (setq dashboard-items '((recents . 30)))
+      (setq dashboard-banner-logo-title "Hang the viggers!!!"))
+  #+end_src
+* Info books:
+  #+begin_src emacs-lisp
+    (setq Info-additional-directory-list '("~/Libros/tutoriales/sicp"))
+  #+end_src
+
+* Vainilla emacs?
+** IDO
+  #+begin_src emacs-lisp
+    ;; (use-package ido-vertical-mode
+    ;;   :ensure t
+    ;;   :init
+    ;;   (ido-vertical-mode 1))
+    ;; (setq ido-enable-flex-matching nil)
+    ;; (setq ido-create-new-bufer 'always)
+    ;; (setq ido-everywhere t)
+    ;; (ido-mode 1)
+    ;; (setq ido-vertical-define-keys 'C-n-and-C-p-only)
+  #+end_src
+** smex
+  #+begin_src emacs-lisp
+    ;; (use-package smex
+    ;;   :ensure t
+    ;;   :init (smex-initialize)
+    ;;   :bind
+    ;;   ("M-x" . smex))
+  #+end_src
