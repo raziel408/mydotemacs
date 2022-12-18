@@ -5,12 +5,10 @@
     :ensure t
     :init
     (which-key-mode))
-
   (use-package beacon
     :ensure t
     :init
     (beacon-mode nil))
-
   (use-package rainbow-delimiters
     :ensure t
     :config
@@ -18,62 +16,14 @@
 
   (use-package indent-guide
     :ensure t
+    ;; :config
+    ;; (set-face-background 'indent-guide-face "dimgray")
     :init
     (indent-guide-global-mode))
 
   (use-package pandoc
     :ensure t)
-
-  (use-package pdf-tools
-    :ensure t
-    :init
-    (pdf-tools-install))
-
-  (use-package elfeed
-    :ensure t)
-
-  (use-package elpher
-    :ensure t)
-
-  (use-package lorem-ipsum
-    :ensure t)
 #+END_SRC
-* Modos varios:
-#+begin_src emacs-lisp
-  (use-package emmet-mode
-    :ensure t
-    :hook
-    (js-mode . emmet-mode)
-    (html-mode . emmet-mode))
-
-  (use-package yaml-mode
-    :ensure t
-    :mode "\\.yml\\'")
-
-  (use-package haskell-mode
-    :ensure t)
-
-  (use-package ledger-mode
-    :ensure t
-    :init
-    (setq ledger-clear-whole-transactions 1)
-    :mode "\\.dat\\'")
-
-  (use-package csv-mode
-    :ensure t
-    :mode "\\.csv\\'")
-
-
-  (use-package dockerfile-mode
-    :ensure t
-    :mode "Dockerfile\\'")
-
-  (use-package epresent
-    :ensure t)
-#+end_src
-
-#+RESULTS:
-
 * Rest Client:
 #+begin_src emacs-lisp
   (use-package restclient
@@ -85,40 +35,13 @@
      'org-babel-load-languages
      '((restclient . t))))
 #+end_src
-
-* Engine mode
-#+begin_src emacs-lisp
-  (use-package engine-mode
-    :ensure t
-    :config
-    (engine-mode t))
-
-  (defengine github
-    "https://github.com/search?ref=simplesearch&q=%s")
-
-  (defengine duckduckgo
-    "https://duckduckgo.com/?q=%s"
-    :keybinding "d")
-
-  (defengine mozilawebdoc
-    "https://developer.mozilla.org/en-US/search?q=%s")
-
-  (defengine searx
-    "https://searx.org/search?q=%s")
-#+end_src
-* reloj
-#+begin_src emacs-lisp
-  (setq display-time-24hr-format 1)
-  (display-time-mode 0)
-  (display-battery-mode -1)
-#+end_src
 * Configuraciones globales:
-** Las que me gustan (estan bien):
 #+BEGIN_SRC emacs-lisp
   (show-paren-mode 1)
   (electric-pair-mode t)
   (line-number-mode 1)
   (column-number-mode 1)
+  ;; (when window-system (global-hl-line-mode t))
   (defalias 'yes-or-no-p 'y-or-n-p)
   (tool-bar-mode -1)
   (menu-bar-mode -1)
@@ -131,19 +54,6 @@
   (defvar backup-dir "~/.emacs.d/backups/")
   (setq backup-directory-alist (list (cons "." backup-dir)))
 #+END_SRC
-** Las que no estan bien:
-#+BEGIN_SRC emacs-lisp
-  ;; emojis
-  ;; Hay que instalar symbola y dajavu fonts
-  (when (member "Symbola" (font-family-list))
-    (set-fontset-font
-     t 'symbol (font-spec :family "Segoe UI Emoji") nil 'prepend))
-#+END_SRC
-** Transparencia:
-#+begin_src emacs-lisp
-  (set-frame-parameter (selected-frame) 'alpha '(85 . 50))
-  (add-to-list 'default-frame-alist '(alpha . (85 . 50)))
-#+end_src
 * Terminal:
 #+begin_src emacs-lisp
   (defvar my-term-shell "/bin/bash")
@@ -215,151 +125,33 @@
 #+end_src
 * Navegador
 #+BEGIN_SRC emacs-lisp
-  ;; (setq browse-url-browser-function 'eww-browse-url)
-#+END_SRC
-* LaTex
-#+BEGIN_SRC emacs-lisp
-  (use-package tex
-    :ensure auctex
-    :config
-    (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
-    (add-hook 'LaTeX-mode-hook 'company-mode)
-    (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
-    (setq reftex-plug-into-auctex t))
+  (setq browse-url-browser-function 'eww-browse-url)
 #+END_SRC
 * Python
 #+BEGIN_SRC emacs-lisp
   (setq python-shell-interpreter "/usr/bin/python3")
 #+END_SRC
-* Scheme
-#+begin_src emacs-lisp
-  (set-variable (quote scheme-program-name) "guile")
-#+end_src
-* Singular
-#+BEGIN_SRC emacs-lisp
-  (setq load-path (cons "<singular-emacs-home-directory>" load-path))
-  (autoload 'singular "singular"
-    "Start Singular using default values." t)
-  (autoload 'singular-other "singular"
-    "Ask for arguments and start Singular." t)
-  (add-to-list 'load-path "/home/raziel/programas/singular/share/singular/emacs/")
-  (require 'singular)
-  (setq singular-emacs-home-directory "/home/raziel/programas/singular/share/singular/emacs/")
-  (defvar current-menubar nil)
-  (setq singular-executable-default "/home/raziel/programas/singular/bin/Singular")
-#+END_SRC
+
 * Flycheck
 #+begin_src emacs-lisp
-  ;; (use-package flycheck
-  ;;   :ensure t
-  ;;   :init
-  ;;   (global-flycheck-mode))
+  (use-package flycheck
+    :ensure t
+    :init
+    (global-flycheck-mode)
+    (setq flycheck-javascript-standard-executable "semistandard"))
 
-  ;; (use-package flycheck
-  ;;   :ensure t
-  ;;   :init
-  ;;   (global-flycheck-mode)
-  ;;   (setq flycheck-javascript-standard-executable "semistandard"))
+  (setq-default flycheck-disabled-checkers
+		(append flycheck-disabled-checkers
+			'(javascript-jshint json-jsonlist)))
 
-  ;; (setq-default flycheck-disabled-checkers
-  ;; 	      (append flycheck-disabled-checkers
-  ;; 		      '(javascript-jshint json-jsonlist)))
-
-  ;; ;; Enable eslint checker for web-mode
-  ;; (flycheck-add-mode 'javascript-eslint 'web-mode)
-  ;; ;; Enable flycheck globally
-  ;; ;; (add-hook 'after-init-hook #'global-flycheck-mode)
-  ;; (use-package add-node-modules-path
-  ;;   :ensure t
-  ;;   :init
-  ;;   (add-hook 'flycheck-mode-hook 'add-node-modules-path))
-#+end_src
-* lsp mode:
-** Inicializa lsp
-#+begin_src emacs-lisp
-  ;; (setq read-process-output-max (* 10 (* 1024 1024)))
-  ;; (setq gc-cons-threshold 300000000)
-  ;; (use-package lsp-mode
-  ;;   :ensure t
-  ;;   :init
-  ;;   (setq lsp-keymap-prefix "C-c l")
-  ;;   (setq lsp-enable-indentation nil)
-  ;;   :hook ((LaTeX-mode . lsp-deferred)
-  ;; 	 (lsp-mode . lsp-enable-which-key-integration))
-  ;;   :commands (lsp lsp-deferred))
-
-  ;; (use-package lsp-ui
-  ;;   :ensure t
-  ;;   :commands lsp-ui-mode)
-
-  ;; (use-package lsp-ivy
-  ;;   :ensure t
-  ;;   :commands lsp-ivy-workspace-symbol)
-  ;; (use-package lsp-treemacs
-  ;;   :ensure t
-  ;;   :commands lsp-treemacs-errors-list)
-
-  ;; (use-package dap-mode
-  ;;   :ensure t)
-#+end_src
-** languages
-#+begin_src emacs-lisp
-  ;; (use-package lsp-mode
-  ;;   :hook
-  ;;   (js-mode . lsp-deferred)
-  ;;   (typescript-mode . lsp-deferred)
-  ;;   (html-mode . lsp-deferred)
-  ;;   (css-mode . lsp-deferred))
-#+end_src
-** Latex:
-#+begin_src emacs-lisp
-  ;; (add-to-list 'lsp-language-id-configuration '(LaTeX-mode . "latex"))
-
-  ;; (defcustom lsp-tex-executable "digestif"
-  ;;   "Command to start the Digestif language server."
-  ;;   :group 'lsp-tex
-  ;;   :risky t
-  ;;   :type 'file)
-
-  ;; (lsp-register-client
-  ;;  (make-lsp-client
-  ;;   :new-connection (lsp-stdio-connection (lambda () lsp-text-executable))
-  ;;   :activation-fn (lsp-activate-on "plaintex" "latex")
-  ;;   :priority -1
-  ;;   :server-id 'digestif))
-#+end_src
-** eglot
-#+begin_src emacs-lisp
-  (use-package eglot
-    :ensure t)
-#+end_src
-* WebDev
-** Javascript:
-#+begin_src emacs-lisp
-  (defun my-js-hook ()
-    (setq js-indent-level 2)
-    (subword-mode 1))
-  (add-hook 'js-mode-hook 'my-js-hook)
-#+end_src
-** Type Script
-#+begin_src emacs-lisp
-  (defun my-ts-hook ()
-    (subword-mode 1))
-  (add-hook 'typescript-mode-hook 'my-ts-hook)
-#+end_src
-** CSS
-#+begin_src emacs-lisp
-  (defun my-css-hook ()
-    (setq css-indent-offset 2))
-  (add-hook 'css-mode-hook 'my-css-hook)
-#+end_src
-** Simple httpd
-#+begin_src emacs-lisp
-  (use-package simple-httpd
-    :ensure t)
-
-  (setq httpd-root "~/ejercicios-intek/presentations/redux-sagas")
-  ;; (httpd-start)
+  ;; Enable eslint checker for web-mode
+  (flycheck-add-mode 'javascript-eslint 'web-mode)
+  ;; Enable flycheck globally
+  ;; (add-hook 'after-init-hook #'global-flycheck-mode)
+  (use-package add-node-modules-path
+    :ensure t
+    :init
+    (add-hook 'flycheck-mode-hook 'add-node-modules-path))
 #+end_src
 * Company mode:
 ** Vainilla Company:
@@ -398,11 +190,6 @@
     :ensure t
     :hook (company-mode . company-box-mode))
 #+end_src
-* Load lisp
-#+begin_src emacs-lisp
-  (add-hook 'tetris-mode-hook
-	    (load "~/.emacs.d/lisp/mytetris.el"))
-#+end_src
 * Orgmode:
 #+begin_src emacs-lisp
   (add-hook 'org-mode-hook 'toggle-truncate-lines)
@@ -413,10 +200,6 @@
   (setq org-agenda-start-with-log-mode t)
   (setq org-log-done 'time)
   (setq org-default-notes-file (concat org-directory "/Intinerario/tareassinclasificar.org"))
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((haskell . t)
-     (js . t)))
 #+end_src
 ** org-ref:
 #+begin_src emacs-lisp
@@ -435,11 +218,6 @@
     (setq bibtex-completion-bibliography '("~/Sync/bibliografiaMat/mizbiblio.bib"))
     (setq bibtex-completion-library-path '("~/Articulos"))
     (setq bibtex-completion-pdf-field "File"))
-#+end_src
-** org-contacts:
-#+begin_src emacs-lisp
-  (use-package org-contacts
-    :ensure t)
 #+end_src
 ** Org-roam:
 #+begin_src emacs-lisp
@@ -473,15 +251,8 @@
     :ensure t
     :config
     (dashboard-setup-startup-hook)
-    (setq dashboard-items '((recents  . 10)
-			    (bookmarks . 5)
-			    (projects . 5)
-			    (agenda . 5)
-			    (registers . 5)))
+    (setq dashboard-items '((recents . 30)))
     (setq dashboard-banner-logo-title "Hang the viggers!!!"))
-
-  (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
-
 #+end_src
 * Info books:
 #+begin_src emacs-lisp
