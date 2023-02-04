@@ -46,11 +46,12 @@
  '(nrepl-message-colors
    '("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3"))
  '(org-agenda-files
-   '("/home/raziel/Orgmode/Intinerario/tareassinclasificar.org" "/home/raziel/Orgmode/Intinerario/academico.org" "/home/raziel/Orgmode/Intinerario/personal.org" "/home/raziel/Orgmode/Intinerario/trabajo.org"))
+   '("/home/raziel/Orgmode/intinerario/tareassinclasificar.org" "/home/raziel/Orgmode/intinerario/academico.org" "/home/raziel/Orgmode/intinerario/personal.org" "/home/raziel/Orgmode/intinerario/trabajo.org"))
  '(org-capture-templates
    '(("n" "Crea una nueva tarea" entry
       (file "")
-      (file "~/Orgmode/Intinerario/tarea.org"))))
+      (file "~/Orgmode/intinerario/tarea.org"))))
+ '(org-default-notes-file "~/Orgmode/intinerario/tareassinclasificar.org")
  '(org-fontify-done-headline nil)
  '(org-fontify-todo-headline nil)
  '(org-log-into-drawer t)
