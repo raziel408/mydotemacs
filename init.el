@@ -59,7 +59,7 @@
  '(org-refile-targets '((org-agenda-files :tag . "")))
  '(org-refile-use-outline-path 'file)
  '(package-selected-packages
-   '(org-plus-contrib org-contacts elpher epresent dashboard org-roam company-box dap-mode lsp-treemacs lsp-ivy lsp-ui js-react-redux-yasnippets lsp-mode prettier-js tide add-node-modules-path ob-restclient restclient emmet-mode rainbow-delimiters yaml-mode which-key web-mode use-package telephone-line switch-window spacemacs-theme skewer-mode pdf-tools pandoc org-ref magit lorem-ipsum ledger-mode ivy-bibtex indent-guide haskell-mode flycheck engine-mode elfeed dockerfile-mode csv-mode counsel-projectile company-web company-auctex beacon))
+   '(nix-mode typescript-mode typescritp-mode markdown-mode hl-todo apheleia org-plus-contrib org-contacts elpher epresent dashboard org-roam company-box dap-mode lsp-treemacs lsp-ivy lsp-ui js-react-redux-yasnippets lsp-mode prettier-js tide add-node-modules-path ob-restclient restclient emmet-mode rainbow-delimiters yaml-mode which-key web-mode use-package telephone-line switch-window spacemacs-theme skewer-mode pdf-tools pandoc org-ref magit lorem-ipsum ledger-mode ivy-bibtex indent-guide haskell-mode flycheck engine-mode elfeed dockerfile-mode csv-mode counsel-projectile company-web company-auctex beacon))
  '(pdf-view-midnight-colors '("#b2b2b2" . "#292b2e"))
  '(restclient-inhibit-cookies nil)
  '(typescript-indent-level 2)

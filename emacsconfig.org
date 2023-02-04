@@ -63,17 +63,32 @@
     :ensure t
     :mode "\\.csv\\'")
 
-
   (use-package dockerfile-mode
     :ensure t
     :mode "Dockerfile\\'")
 
   (use-package epresent
     :ensure t)
+
+  (use-package markdown-mode
+    :ensure t
+    :mode "\\.md\\'")
+
+  (use-package typescript-mode
+    :ensure t)
+
+  (use-package nix-mode
+    :ensure t
+    :mode "\\.nix\\'")
 #+end_src
-
-#+RESULTS:
-
+* Testing
+#+begin_src emacs-lisp
+  (use-package hl-todo
+    :ensure t
+    :custom-face
+    (hl-todo ((t (:inherit hl-todo :italic t))))
+    :hook ((prog-mode . hl-todo-mode)))
+#+end_src
 * Rest Client:
 #+begin_src emacs-lisp
   (use-package restclient
@@ -274,64 +289,19 @@
   ;;   :init
   ;;   (add-hook 'flycheck-mode-hook 'add-node-modules-path))
 #+end_src
-* lsp mode:
-** Inicializa lsp
-#+begin_src emacs-lisp
-  ;; (setq read-process-output-max (* 10 (* 1024 1024)))
-  ;; (setq gc-cons-threshold 300000000)
-  ;; (use-package lsp-mode
-  ;;   :ensure t
-  ;;   :init
-  ;;   (setq lsp-keymap-prefix "C-c l")
-  ;;   (setq lsp-enable-indentation nil)
-  ;;   :hook ((LaTeX-mode . lsp-deferred)
-  ;; 	 (lsp-mode . lsp-enable-which-key-integration))
-  ;;   :commands (lsp lsp-deferred))
-
-  ;; (use-package lsp-ui
-  ;;   :ensure t
-  ;;   :commands lsp-ui-mode)
-
-  ;; (use-package lsp-ivy
-  ;;   :ensure t
-  ;;   :commands lsp-ivy-workspace-symbol)
-  ;; (use-package lsp-treemacs
-  ;;   :ensure t
-  ;;   :commands lsp-treemacs-errors-list)
-
-  ;; (use-package dap-mode
-  ;;   :ensure t)
-#+end_src
-** languages
-#+begin_src emacs-lisp
-  ;; (use-package lsp-mode
-  ;;   :hook
-  ;;   (js-mode . lsp-deferred)
-  ;;   (typescript-mode . lsp-deferred)
-  ;;   (html-mode . lsp-deferred)
-  ;;   (css-mode . lsp-deferred))
-#+end_src
-** Latex:
-#+begin_src emacs-lisp
-  ;; (add-to-list 'lsp-language-id-configuration '(LaTeX-mode . "latex"))
-
-  ;; (defcustom lsp-tex-executable "digestif"
-  ;;   "Command to start the Digestif language server."
-  ;;   :group 'lsp-tex
-  ;;   :risky t
-  ;;   :type 'file)
-
-  ;; (lsp-register-client
-  ;;  (make-lsp-client
-  ;;   :new-connection (lsp-stdio-connection (lambda () lsp-text-executable))
-  ;;   :activation-fn (lsp-activate-on "plaintex" "latex")
-  ;;   :priority -1
-  ;;   :server-id 'digestif))
-#+end_src
-** eglot
+* eglot
 #+begin_src emacs-lisp
   (use-package eglot
-    :ensure t)
+    :ensure t
+    :config
+    (setq eglot-events-buffer-size 0)
+    :hook
+    (js-mode . eglot-ensure)
+    (typescript-mode . eglot-ensure)
+    (html-mode . eglot-ensure)
+    (css-mode . eglot-ensure)
+    (emacs-lisp-mode . eglot-ensure)
+    (tex-mode . eglot-ensure))
 #+end_src
 * WebDev
 ** Javascript:
@@ -364,39 +334,42 @@
 * Company mode:
 ** Vainilla Company:
 #+begin_src emacs-lisp
-  ;; (use-package company
-  ;;   :ensure t)
-  ;; (use-package company
-  ;;   :ensure t
-  ;;   :init
-  ;;   (add-hook 'after-init-hook 'global-company-mode))
-  ;; (use-package company-auctex
-  ;;   :ensure t
-  ;;   :config
-  ;;   (require 'company)
-  ;;   :init
-  ;;   (company-auctex-init))
-  ;; (use-package company-web-html)
-  ;; (use-package company-web-jade)
-  ;; (use-package company-web-slim)
-#+end_src
-** Usando LSP:
-#+begin_src emacs-lisp
   (use-package company
     :ensure t
-    :after lsp-mode
-    :hook (after-init . global-company-mode)
-    ;; :bind (:map company-active-map
-    ;; 	 ("<tab>" . company-complete-selection))
-    ;; 	(:map lsp-mode-map
-    ;; 	 ("<tab>" . company-indent-or-complete-common))
+    :init
+    (add-hook 'after-init-hook 'global-company-mode)
     :custom
     (company-minimum-prefix-length 1)
     (company-idle-delay 0.0))
+#+end_src
+** Usando LSP:
+#+begin_src emacs-lisp
+  ;; (use-package company
+  ;;   :ensure t
+  ;;   :after lsp-mode
+  ;;   :hook (after-init . global-company-mode)
+  ;;   ;; :bind (:map company-active-map
+  ;;   ;; 	 ("<tab>" . company-complete-selection))
+  ;;   ;; 	(:map lsp-mode-map
+  ;;   ;; 	 ("<tab>" . company-indent-or-complete-common))
+  ;;   :custom
+  ;;   (company-minimum-prefix-length 1)
+  ;;   (company-idle-delay 0.0))
 
-  (use-package company-box
+  ;; (use-package company-box
+  ;;   :ensure t
+  ;;   :hook (company-mode . company-box-mode))
+#+end_src
+* Code formatter (apheleia):
+** Installation:
+#+begin_src emacs-lisp
+  (use-package apheleia
     :ensure t
-    :hook (company-mode . company-box-mode))
+    :init
+    ;; (apheleia-global-mode +1)
+    :config
+    (setf (alist-get 'latexindent apheleia-formatters)
+	  '("latexindent" "--logfile=/dev/null" "-l")))
 #+end_src
 * Load lisp
 #+begin_src emacs-lisp
